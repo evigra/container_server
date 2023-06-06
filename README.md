@@ -12,10 +12,12 @@ sudo chown $(whoami):$(whoami) /var/run/docker.sock
 
 
 # Create database
-docker run -d -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo -e POSTGRES_DB=postgres --name db postgres:13
+docker run -d -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo -e POSTGRES_DB=postgres -p 5432:5432 -p 8071:8071 -p 8072:8072 --name db postgres:13
 
 # Create container
-docker run -v ~/docker/container/addons:/mnt/extra-addons -p 8016:8069 -p 8116:8116 --name odoo_16 --link db:db -t odoo:16.0
+docker run -v ~/docker/container_server/addons:/mnt/extra-addons -p 7916:8069 -p 7906:7906 --name server_16 --link db:db -t odoo:16.0
 
 # Install modules
-docker exec -ti odoo_16 bash -c "/usr/bin/odoo -i module -p 8116  -d odoo_16 --db_host db --db_port 5432 --db_user odoo --db_password odoo --without-demo all"
+docker exec -ti server_16 bash -c "/usr/bin/odoo -i module -p 7906  -d server_16 --db_host db --db_port 5432 --db_user odoo --db_password odoo --without-demo all"
+
+docker exec -ti server_16 bash -c "/usr/bin/odoo -i gpsmap_server -u gpsmap_server -p 7906  -d server_16 --db_host db --db_port 5432 --db_user odoo --db_password odoo --without-demo all"
