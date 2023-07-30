@@ -1,0 +1,28 @@
+version: '2'
+services:
+  web:
+    image: odoo:16.0
+    depends_on:
+      - db
+    ports:
+      - "7916:8069"
+      - "7906:7906"
+    volumes:
+      - web:/var/lib/odoo
+      - ./config:/etc/odoo
+      - ./addons:/mnt/extra-addons
+      - ./logs/odoo-server.log:/var/log/odoo/openerp-server.log
+  db:
+    image: postgres:13
+    ports:
+      - "5432:5432"    
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - db:/var/lib/postgresql/data/pgdata
+volumes:
+  web:
+  db:
