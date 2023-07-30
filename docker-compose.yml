@@ -17,7 +17,7 @@ services:
     ports:
       - "5432:5432"    
     environment:
-      - POSTGRES_DB=postgres
+      - POSTGRES_DB=server_16
       - POSTGRES_PASSWORD=odoo
       - POSTGRES_USER=odoo
       - PGDATA=/var/lib/postgresql/data/pgdata
